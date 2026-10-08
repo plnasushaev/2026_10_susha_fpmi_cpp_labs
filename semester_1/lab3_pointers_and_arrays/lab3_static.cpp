@@ -99,13 +99,17 @@ void PrintArray(int *array, int size)
 
 int main()
 {
+    const unsigned short max_size = 100;
+    int userarray[100];
     int size;
     std::cout << "Enter the size of your array: " << std::endl;
     EnterInt(size);
+    while (std::abs(size)>100) {
+        std::cout << "Size must be 1 to 100." << std::endl;
+        EnterInt(size);
+    }
     size = std::abs(size);
     std::cin.ignore(1000, '\n');
-
-    int *userarray = new int[size];
 
     std::string input;
     std::cout << "You can determine your array manually or generate it. Type \"manual\" or \"random\" to choose." << std::endl;
@@ -143,6 +147,5 @@ int main()
         PrintArray(userarray, size);
     }
 
-    delete[] userarray;
     return 0;
 }
