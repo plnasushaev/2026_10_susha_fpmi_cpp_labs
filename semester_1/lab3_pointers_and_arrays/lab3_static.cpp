@@ -75,9 +75,9 @@ bool DeleteElements(int *array, int size, int A)
             j++;
         }
     }
-    for (; j < size; j++)
+    for (unsigned int j1 = j; j1 < size; j1++)
     {
-        array[j] = 0;
+        array[j1] = 0;
     }
     if (j == size)
     {
@@ -135,7 +135,7 @@ int main()
 
     if (del == 0)
     {
-        std::cout << "There are no elements whole absolute value equals T.";
+        std::cout << "There are no elements whose absolute value equals T.";
     }
     else
     {
