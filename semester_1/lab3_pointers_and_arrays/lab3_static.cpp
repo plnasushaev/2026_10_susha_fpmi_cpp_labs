@@ -23,13 +23,12 @@ bool EnterStr(std::string &input)
     }
 }
 
-void EnterUI(int &A)
+void EnterInt(int &A)
 {
     while (true)
     {
         if (std::cin >> A)
         {
-            A = std::abs(A);
             break;
         }
         else
@@ -51,15 +50,21 @@ void ManualArray(int *array, int size)
 
 void RandomArray(int *array, int size)
 {
+    int a, b;
+    std::cout << "Enter a, then b (a!=b). Generated values will be within the range [a; b] or [b; a]." << std::endl;
+    EnterInt(a);
+    EnterInt(b);
+    int min = std::min(a, b);
+    int max = std::max(a, b);
     std::mt19937 gen(static_cast<unsigned int>(std::time(nullptr)));
-    std::uniform_int_distribution<int> dist(-1000, 1000);
+    std::uniform_int_distribution<int> dist(min, max);
     for (unsigned int i = 0; i < size; i++)
     {
         array[i] = dist(gen);
     }
 }
 
-void DeleteElements(int *array, int size, int A)
+bool DeleteElements(int *array, int size, int A)
 {
     unsigned int j = 0;
     for (unsigned int i = 0; i < size; i++)
@@ -73,6 +78,14 @@ void DeleteElements(int *array, int size, int A)
     for (; j < size; j++)
     {
         array[j] = 0;
+    }
+    if (j == size)
+    {
+        return 0;
+    }
+    else
+    {
+        return 1;
     }
 }
 
@@ -88,7 +101,8 @@ int main()
 {
     int size;
     std::cout << "Enter the size of your array: " << std::endl;
-    EnterUI(size);
+    EnterInt(size);
+    size = std::abs(size);
     std::cin.ignore(1000, '\n');
 
     int *userarray = new int[size];
@@ -101,7 +115,7 @@ int main()
     {
         std::cout << "Enter " << size << " elements with spaces between them: " << std::endl;
         ManualArray(userarray, size);
-            std::cin.ignore(1000, '\n');
+        std::cin.ignore(1000, '\n');
     }
 
     if (inp == 0)
@@ -114,12 +128,20 @@ int main()
 
     int T;
     std::cout << "\nEnter T. All the elements whose absolute value equals T's will be replaced with zeros." << std::endl;
-    EnterUI(T);
+    EnterInt(T);
+    T = std::abs(T);
 
-    DeleteElements(userarray, size, T);
+    bool del = DeleteElements(userarray, size, T);
 
-    std::cout << "Modified array: ";
-    PrintArray(userarray, size);
+    if (del == 0)
+    {
+        std::cout << "There are no elements whole absolute value equals T.";
+    }
+    else
+    {
+        std::cout << "Modified array: ";
+        PrintArray(userarray, size);
+    }
 
     delete[] userarray;
     return 0;
