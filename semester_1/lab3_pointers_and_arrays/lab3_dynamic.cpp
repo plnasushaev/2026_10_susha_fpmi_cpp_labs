@@ -43,7 +43,7 @@ void EnterNum(T &A)
 
 void ManualArray(float *array, int size)
 {
-    for (unsigned int i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)
     {
         std::cin >> array[i];
     }
@@ -59,21 +59,58 @@ void RandomArray(float *array, int size)
     float max = std::max(a, b);
     std::mt19937 gen(static_cast<unsigned int>(std::time(nullptr)));
     std::uniform_real_distribution<float> dist(min, max);
-    for (unsigned int i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)
     {
         array[i] = dist(gen);
     }
 }
 
-void EvenSort()
-{
-}
-
 void PrintArray(float *array, int size)
 {
-    for (unsigned int i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)
     {
         std::cout << array[i] << ' ';
+    }
+    std::cout << std::endl;
+}
+
+void EvenSort(float *array, int size)
+{
+    int even = (size + 1) / 2;
+    int amount = 0;
+    for (int i = 0; i < size; i++)
+    {
+        if ((array[i] >= 0) && (array[i] <= 10))
+        {
+            float temp = array[i];
+            for (int j = i; j > amount; j--)
+            {
+                array[j] = array[j - 1];
+            }
+            array[amount] = temp;
+            amount++;
+        }
+    }
+    if (even < amount)
+    {
+        std::cout << "Unable to sort your array: more numbers within [0,10] than even indexes.";
+        std::exit(-1);
+    }
+    for (int i = 1; i < (2 * amount); i += 2)
+    {
+        for (int j = i; j < size; j++)
+        {
+            if (!((array[j] >= 0) && (array[j] <= 10)))
+            {
+                float temp = array[j];
+                for (int k = j; k > i; k--)
+                {
+                    array[k] = array[k - 1];
+                }
+                array[i] = temp;
+                break;
+            }
+        }
     }
 }
 
@@ -106,7 +143,10 @@ int main()
     std::cout << "Your array: ";
     PrintArray(userarray, size);
 
-    EvenSort();
+    EvenSort(userarray, size);
+
+    std::cout << "Sorted array: ";
+    PrintArray(userarray, size);
 
     delete[] userarray;
     return 0;
