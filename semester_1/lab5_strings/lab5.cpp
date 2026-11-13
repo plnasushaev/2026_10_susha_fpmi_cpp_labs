@@ -57,11 +57,15 @@ std::vector<std::string> SeparateString(std::string str)
     while (space_index != std::string::npos)
     {
         std::string word = str.substr(first, space_index - first);
+        if (!word.empty()) {
         result.push_back(word);
+        }
         first = ++space_index;
         space_index = str.find(' ', first);
     }
+    if (first < str.size()) {
     result.push_back(str.substr(first));
+    }
     return result;
 }
 
